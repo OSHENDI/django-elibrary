@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load library_filters %}
+
+{% block title %}{{ book.title }} - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Book Details</h1>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <!-- book cover -->
+            <div class="col-md-4 mb-4">
+                <div class="book-detail-cover">
+                    {% if book.cover %}
+                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-fluid">
+                    {% else %}
+                    <div class="book-cover-placeholder large">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- book info -->
+            <div class="col-md-8">
+                <h2 class="mb-2">{{ book.title }}</h2>
+                <p class="detail-author">
+                    By <a href="{% url 'author_detail' book.author.id %}">{{ book.author.name }}</a>
+                </p>
+                <div class="detail-meta">
+                    <span class="me-3"><i class="fas fa-tag"></i> {{ book.category.name }}</span>
+                    <span class="me-3"><i class="fas fa-calendar"></i> {{ book.publication_year|default:"N/A" }}</span>
+                    <span class="me-3"><i class="fas fa-file-alt"></i> {{ book.pages|default:"N/A" }} pages</span>
+                    <span><i class="fas fa-globe"></i> {{ book.language }}</span>
+                </div>
+
+                <div class="detail-rating my-3">
+                    {{ book.average_rating|star_rating }}
+                    <span class="rating-text">{{ book.average_rating }}/5 ({{ book.rating_count }} reviews)</span>
+                </div>
+
+                <div class="detail-copies mb-3">
+                    <strong>Available:</strong> {{ book.available_copies }} out of {{ book.total_copies }} copies
+                    {{ book|book_status }}
+                </div>
+
+                <div class="detail-description mb-4">
+                    <h5>Description</h5>
+                    <p>{{ book.description|default:"No description available." }}</p>
+                </div>
+
+                <!-- action buttons -->
+                <div class="detail-actions">
+                    {% if user.is_authenticated %}
+                    {% if user_currently_borrowing %}
+                    <span class="btn btn-secondary disabled">Book Reserved by You</span>
+                    {% elif book.is_available %}
+                    <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary-custom">Borrow Book</a>
+                    {% endif %}
+
+                    {% if user_has_borrowed and not user_has_reviewed %}
+                    <a href="{% url 'add_review' book.id %}" class="btn btn-outline-custom">Add Review</a>
+                    {% endif %}
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary-custom">Login to Borrow</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- reviews -->
+        <div class="reviews-section mt-5">
+            <h3 class="section-title">Reviews</h3>
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-user">
+                        {% if review.user.profile.profile_picture %}
+                        <img src="{{ review.user.profile.profile_picture.url }}" alt="{{ review.user.username }}"
+                            class="review-avatar">
+                        {% else %}
+                        <div class="review-avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        {% endif %}
+                        <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
+                    </div>
+                    <span class="review-date">{{ review.created_at|date:"M d, Y" }}</span>
+                </div>
+                <div class="review-rating">
+                    {{ review.rating|star_rating }}
+                </div>
+                <p class="review-comment">{{ review.comment }}</p>
+            </div>
+            {% empty %}
+            <p class="text-muted">No reviews yet. Be the first to share your thoughts.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

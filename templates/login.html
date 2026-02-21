@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="auth-card">
+                    <h2 class="text-center mb-4">Login</h2>
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        {% if field.name == 'remember_me' %}
+                        <div class="mb-3 form-check">
+                            {{ field }}
+                            <label class="form-check-label" for="{{ field.id_for_label }}">Remember me</label>
+                        </div>
+                        {% else %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary-custom w-100">Login</button>
+                    </form>
+                    <p class="text-center mt-3">
+                        Don't have an account? <a href="{% url 'register' %}">Register now</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Review - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Add Review</h1>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="form-card">
+                    <div class="text-center mb-4">
+                        <h4>{{ book.title }}</h4>
+                        <p class="text-muted">by {{ book.author.name }}</p>
+                    </div>
+
+                    <form method="post" action="{% url 'add_review' book.id %}">
+                        {% csrf_token %}
+
+                        <!-- star rating picker -->
+                        <div class="mb-3">
+                            <label class="form-label">Your Rating</label>
+                            <div class="star-picker" id="starPicker">
+                                <i class="far fa-star" data-value="1"></i>
+                                <i class="far fa-star" data-value="2"></i>
+                                <i class="far fa-star" data-value="3"></i>
+                                <i class="far fa-star" data-value="4"></i>
+                                <i class="far fa-star" data-value="5"></i>
+                            </div>
+                            {{ form.rating }}
+                            {% if form.rating.errors %}
+                            <div class="text-danger small mt-1">{{ form.rating.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.comment.id_for_label }}">Your Comment</label>
+                            {{ form.comment }}
+                            {% if form.comment.errors %}
+                            <div class="text-danger small mt-1">{{ form.comment.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary-custom">Submit Review</button>
+                            <a href="{% url 'book_detail' book.id %}" class="btn btn-outline-custom">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

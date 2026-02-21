@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Book Categories</h1>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <a href="{% url 'category_books' category.id %}" class="category-card-link">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas {{ category.icon }}"></i>
+                        </div>
+                        <h4>{{ category.name }}</h4>
+                        <p>{{ category.book_count }} book{{ category.book_count|pluralize }}</p>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p class="text-center text-muted">No categories have been added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

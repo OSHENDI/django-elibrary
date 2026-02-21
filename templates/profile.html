@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>My Profile</h1>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <div class="profile-photo-wrapper">
+                    {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="{{ user.username }}" class="profile-photo">
+                    {% else %}
+                    <div class="profile-photo-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <a href="{% url 'edit_profile' %}" class="btn btn-outline-custom mt-3">Edit Profile</a>
+            </div>
+            <div class="col-md-8">
+                <div class="profile-info-card">
+                    <h3>{{ user.get_full_name|default:user.username }}</h3>
+                    <div class="profile-detail">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ user.email }}</span>
+                    </div>
+                    {% if profile.phone %}
+                    <div class="profile-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ profile.phone }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="profile-detail">
+                        <i class="fas fa-calendar"></i>
+                        <span>Joined {{ user.date_joined|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="stat-card">
+                            <div class="stat-number">{{ profile.currently_borrowed_count }}</div>
+                            <div class="stat-label">Currently Borrowed</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card">
+                            <div class="stat-number">{{ profile.total_borrowed_count }}</div>
+                            <div class="stat-label">Total Borrowed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

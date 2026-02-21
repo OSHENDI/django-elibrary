@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load library_filters %}
+
+{% block title %}{{ author.name }} - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ author.name }}</h1>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-3 text-center">
+                {% if author.photo %}
+                <img src="{{ author.photo.url }}" alt="{{ author.name }}" class="author-detail-photo">
+                {% else %}
+                <div class="author-photo-placeholder large">
+                    <i class="fas fa-user"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                <h3>About {{ author.name }}</h3>
+                <p>{{ author.bio|default:"No biography available." }}</p>
+                <p class="text-muted">{{ author.book_count }} book{{ author.book_count|pluralize }} in our library</p>
+            </div>
+        </div>
+
+        <h3 class="section-title">Books by {{ author.name }}</h3>
+        <div class="row">
+            {% for book in books %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="book-card">
+                    <div class="book-cover">
+                        {% if book.cover %}
+                        <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                        {% else %}
+                        <div class="book-cover-placeholder">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="book-info">
+                        <h5 class="book-title">{{ book.title|truncatewords:6 }}</h5>
+                        <p class="book-category">{{ book.category.name }}</p>
+                        <div class="book-meta">
+                            <span class="book-rating">{{ book.average_rating|star_rating }}</span>
+                            {{ book|book_status }}
+                        </div>
+                        <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-detail">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-muted">No books by this author yet.</p>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-3">
+            <a href="{% url 'author_list' %}" class="btn btn-outline-custom">Back to Authors</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

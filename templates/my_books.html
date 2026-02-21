@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}My Books - Electronic Library{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>My Borrowed Books</h1>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        {% for record in records %}
+        <div class="borrow-card">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center mb-3 mb-md-0">
+                    {% if record.book.cover %}
+                    <img src="{{ record.book.cover.url }}" alt="{{ record.book.title }}" class="borrow-book-thumb">
+                    {% else %}
+                    <div class="book-cover-placeholder small">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <h5><a href="{% url 'book_detail' record.book.id %}">{{ record.book.title }}</a></h5>
+                    <p class="text-muted mb-1">Borrowed: {{ record.borrow_date|date:"M d, Y" }}</p>
+                    <p class="text-muted mb-1">Due: {{ record.due_date|date:"M d, Y" }}</p>
+                </div>
+                <div class="col-md-2 text-center">
+                    {% if record.is_overdue %}
+                    <span class="badge bg-danger">Late</span>
+                    <p class="small text-danger">{{ record.days_remaining }} days overdue</p>
+                    {% else %}
+                    <span class="badge bg-available">On Time</span>
+                    <p class="small text-muted">{{ record.days_remaining }} days left</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-2 text-center">
+                    <a href="{% url 'return_book' record.id %}" class="btn btn-sm btn-outline-custom">Return Book</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5">
+            <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+            <p class="text-muted">You have no borrowed books right now.</p>
+            <a href="{% url 'book_list' %}" class="btn btn-primary-custom">Browse Books</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
