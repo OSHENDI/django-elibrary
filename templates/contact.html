@@ -1,63 +1,65 @@
 {% extends 'base.html' %}
 
-{% block title %}Contact Us - Electronic Library{% endblock %}
+{% block title %}Contact Us - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-general">
     <div class="container">
         <h1>Contact Us</h1>
+        <p>We're happy to hear from you</p>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-7 mb-4">
-                <div class="form-card">
-                    <h3>Send us a message</h3>
-                    <form method="post" action="{% url 'contact' %}">
-                        {% csrf_token %}
-                        {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                            <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
-                            {% endif %}
+        <div class="row justify-content-center">
+
+            <!-- contact form -->
+            <div class="col-lg-6 mb-4">
+                <h3 class="contact-heading">Send a Message</h3>
+                <form method="post" action="{% url 'contact' %}" class="contact-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-4">
+                        <label class="contact-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="contact-error">{{ field.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-contact-submit">Send Message</button>
+                </form>
+            </div>
+
+            <!-- contact info -->
+            <div class="col-lg-4 offset-lg-1 mb-4">
+                <h3 class="contact-heading">Get in Touch</h3>
+                <div class="contact-info-list">
+                    <div class="contact-info-item">
+                        <span class="contact-info-icon"><i class="fas fa-envelope"></i></span>
+                        <div>
+                            <div class="contact-info-label">Email</div>
+                            <div class="contact-info-value">info@elibrary.com</div>
                         </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary-custom">
-                            <i class="fas fa-paper-plane"></i> Send
-                        </button>
-                    </form>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="contact-info-icon"><i class="fas fa-phone"></i></span>
+                        <div>
+                            <div class="contact-info-label">Phone</div>
+                            <div class="contact-info-value">+970-59-123-4567</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <div>
+                            <div class="contact-info-label">Address</div>
+                            <div class="contact-info-value">Downtown , Deir Al Balah</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="contact-info-card">
-                    <h3>Get in touch</h3>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <strong>Email</strong>
-                            <p>info@elibrary.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <strong>Phone</strong>
-                            <p>+1 234 567 890</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <strong>Address</strong>
-                            <p>123 Library Street, City</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </section>

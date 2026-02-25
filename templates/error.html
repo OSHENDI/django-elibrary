@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something Went Wrong - Maktaba</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #2e2c2f;
+            color: #f3e8ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .error-box {
+            max-width: 420px;
+        }
+
+        .error-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #729b79;
+        }
+
+        .error-box h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.6rem;
+            color: #bacdb0;
+        }
+
+        .error-box p {
+            font-size: 0.95rem;
+            color: rgba(243, 232, 238, 0.65);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .error-btn {
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            background: #729b79;
+            color: #f3e8ee;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .error-btn:hover {
+            background: #475b63;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-box">
+        <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+        <h1>Something went wrong</h1>
+        <p>The page you're looking for might not exist, or something unexpected happened. Please try again later.</p>
+        <a href="/" class="error-btn">Back to Home</a>
+    </div>
+</body>
+
+</html>

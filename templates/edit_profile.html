@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Profile - Electronic Library{% endblock %}
+{% block title %}Edit Profile - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-general">
     <div class="container">
         <h1>Edit Profile</h1>
     </div>
@@ -26,7 +26,11 @@
                         </div>
                         {% endfor %}
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary-custom">Save Changes</button>
+                            <button type="submit" class="btn-3d">
+                                <span class="btn-3d-shadow"></span>
+                                <span class="btn-3d-edge"></span>
+                                <span class="btn-3d-front">Save Changes</span>
+                            </button>
                             <a href="{% url 'profile' %}" class="btn btn-outline-custom">Cancel</a>
                         </div>
                     </form>

@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 register = template.Library()
 
 
-# shows a colored badge depending on whether the book has copies left
+# badge showing if the book has copies left
 @register.filter(name='book_status')
 def book_status(book):
     if book.available_copies > 0:
@@ -12,7 +12,7 @@ def book_status(book):
     return mark_safe('<span class="badge bg-borrowed">Fully Borrowed</span>')
 
 
-# turns a number like 3.5 into a row of filled and empty star icons
+# turns a number like 3.5 into filled and empty star icons
 @register.filter(name='star_rating')
 def star_rating(value):
     try:

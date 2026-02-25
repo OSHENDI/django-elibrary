@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}My Books - Electronic Library{% endblock %}
+{% block title %}My Books - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-books">
     <div class="container">
         <h1>My Borrowed Books</h1>
     </div>
@@ -46,7 +46,11 @@
         <div class="text-center py-5">
             <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
             <p class="text-muted">You have no borrowed books right now.</p>
-            <a href="{% url 'book_list' %}" class="btn btn-primary-custom">Browse Books</a>
+            <a href="{% url 'book_list' %}" class="btn-3d">
+                <span class="btn-3d-shadow"></span>
+                <span class="btn-3d-edge"></span>
+                <span class="btn-3d-front">Browse Books</span>
+            </a>
         </div>
         {% endfor %}
     </div>

@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% load library_filters %}
 
-{% block title %}All Books - Electronic Library{% endblock %}
+{% block title %}All Books - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-books">
     <div class="container">
         <h1>All Books</h1>
+        <p>Browse our full collection</p>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <!-- search and filter bar -->
         <div class="filter-bar">
             <form method="get" action="{% url 'book_list' %}" class="row g-2">
                 <div class="col-md-4">
@@ -24,8 +24,7 @@
                         <option value="">All Categories</option>
                         {% for cat in categories %}
                         <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
-                            {{ cat.name }}
-                        </option>
+                            {{ cat.name }} </option>
                         {% endfor %}
                     </select>
                 </div>
@@ -38,70 +37,64 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary-custom w-100">
-                        <i class="fas fa-search"></i> Search
+                    <button type="submit" class="btn-3d btn-3d-block">
+                        <span class="btn-3d-shadow"></span>
+                        <span class="btn-3d-edge"></span>
+                        <span class="btn-3d-front"><i class="fas fa-search"></i> Search</span>
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- books grid -->
-        <div class="row mt-4">
+        <div class="row g-3 mt-2">
             {% for book in page %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card">
-                    <div class="book-cover">
-                        {% if book.cover %}
-                        <img src="{{ book.cover.url }}" alt="{{ book.title }}">
-                        {% else %}
-                        <div class="book-cover-placeholder">
-                            <i class="fas fa-book"></i>
+            <div class="col-lg-2 col-md-4 col-4">
+                <a href="{% url 'book_detail' book.id %}" class="recent-card-link">
+                    <div class="recent-card">
+                        <span
+                            class="card-status-badge {% if book.available_copies > 0 %}badge-available{% else %}badge-borrowed{% endif %}">
+                            {% if book.available_copies > 0 %}Available{% else %}Fully Borrowed{% endif %}
+                        </span>
+                        <div class="recent-card-cover">
+                            {% if book.cover %}
+                            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                            {% else %}
+                            <div class="book-cover-placeholder"><i class="fas fa-book"></i></div>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                    </div>
-                    <div class="book-info">
-                        <h5 class="book-title">{{ book.title|truncatewords:6 }}</h5>
-                        <p class="book-author">{{ book.author.name }}</p>
-                        <p class="book-category">{{ book.category.name }}</p>
-                        <div class="book-meta">
-                            <span class="book-rating">{{ book.average_rating|star_rating }}</span>
-                            {{ book|book_status }}
+                        <div class="recent-card-info">
+                            <h6 class="recent-card-title">{{ book.title|truncatewords:4 }}</h6>
+                            <p class="recent-card-meta">{{ book.author.name }}</p>
+                            <p class="recent-card-meta">{{ book.category.name }}</p>
+                            <div class="recent-card-rating">{{ book.average_rating|star_rating }}</div>
+                            <span class="btn-card-details">View Details</span>
                         </div>
-                        <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-detail">View Details</a>
                     </div>
-                </div>
+                </a>
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <i class="fas fa-search fa-3x text-muted mb-3"></i>
                 <p class="text-muted">No books found matching your search.</p>
             </div>
             {% endfor %}
         </div>
 
-        <!-- pagination -->
         {% if page.has_other_pages %}
         <nav class="mt-4">
             <ul class="pagination justify-content-center">
                 {% if page.has_previous %}
-                <li class="page-item">
-                    <a class="page-link"
-                        href="?page={{ page.previous_page_number }}&q={{ query }}&category={{ selected_category }}&sort={{ selected_sort }}">Previous</a>
+                <li class="page-item"><a class="page-link"
+                        href="?page={{ page.previous_page_number }}&q={{ query }}&category={{ selected_category|default_if_none:'' }}&sort={{ selected_sort }}">Prev</a>
                 </li>
                 {% endif %}
-
                 {% for num in page.paginator.page_range %}
                 <li class="page-item {% if page.number == num %}active{% endif %}">
-                    <a class="page-link"
-                        href="?page={{ num }}&q={{ query }}&category={{ selected_category }}&sort={{ selected_sort }}">{{
-                        num }}</a>
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                 </li>
                 {% endfor %}
-
                 {% if page.has_next %}
-                <li class="page-item">
-                    <a class="page-link"
-                        href="?page={{ page.next_page_number }}&q={{ query }}&category={{ selected_category }}&sort={{ selected_sort }}">Next</a>
+                <li class="page-item"><a class="page-link"
+                        href="?page={{ page.next_page_number }}&q={{ query }}&category={{ selected_category|default_if_none:'' }}&sort={{ selected_sort }}">Next</a>
                 </li>
                 {% endif %}
             </ul>

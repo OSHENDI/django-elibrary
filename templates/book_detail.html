@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load library_filters %}
 
-{% block title %}{{ book.title }} - Electronic Library{% endblock %}
+{% block title %}{{ book.title }} - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-books">
     <div class="container">
         <h1>Book Details</h1>
     </div>
@@ -60,14 +60,22 @@
                     {% if user_currently_borrowing %}
                     <span class="btn btn-secondary disabled">Book Reserved by You</span>
                     {% elif book.is_available %}
-                    <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary-custom">Borrow Book</a>
+                    <a href="{% url 'borrow_book' book.id %}" class="btn-3d">
+                        <span class="btn-3d-shadow"></span>
+                        <span class="btn-3d-edge"></span>
+                        <span class="btn-3d-front">Borrow Book</span>
+                    </a>
                     {% endif %}
 
                     {% if user_has_borrowed and not user_has_reviewed %}
                     <a href="{% url 'add_review' book.id %}" class="btn btn-outline-custom">Add Review</a>
                     {% endif %}
                     {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-primary-custom">Login to Borrow</a>
+                    <a href="{% url 'login' %}" class="btn-3d">
+                        <span class="btn-3d-shadow"></span>
+                        <span class="btn-3d-edge"></span>
+                        <span class="btn-3d-front">Login to Borrow</span>
+                    </a>
                     {% endif %}
                 </div>
             </div>

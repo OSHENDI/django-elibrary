@@ -6,6 +6,7 @@ from .models import (
 )
 
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'icon', 'book_count']
@@ -13,11 +14,13 @@ class CategoryAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ['name', 'book_count']
     search_fields = ['name']
     list_per_page = 20
+
 
 
 @admin.register(Book)
@@ -28,11 +31,13 @@ class BookAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'phone', 'currently_borrowed_count', 'total_borrowed_count']
     search_fields = ['user__username', 'user__email', 'phone']
     list_per_page = 20
+
 
 
 @admin.register(BorrowRecord)
@@ -43,6 +48,7 @@ class BorrowRecordAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'book', 'rating', 'created_at']
@@ -51,11 +57,13 @@ class ReviewAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'subject', 'created_at']
     search_fields = ['name', 'email', 'subject', 'message']
     list_per_page = 20
+
 
 
 @admin.register(VisitLog)
@@ -66,18 +74,21 @@ class VisitLogAdmin(admin.ModelAdmin):
     list_per_page = 50
 
 
+
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'maintenance_mode']
 
-    # only one settings row should exist
+    # only one settings row allowed
     def has_add_permission(self, request):
         if SiteSettings.objects.exists():
             return False
         return True
 
+    # dont allow deleting settings
     def has_delete_permission(self, request, obj=None):
         return False
+
 
 
 admin.site.site_header = 'لوحة تحكم المكتبة'

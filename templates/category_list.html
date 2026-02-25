@@ -1,31 +1,38 @@
 {% extends 'base.html' %}
 
-{% block title %}Categories - Electronic Library{% endblock %}
+{% block title %}Categories - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-categories">
     <div class="container">
         <h1>Book Categories</h1>
+        <p>Browse our collection by topic</p>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <div class="row">
+        <div class="row g-3">
             {% for category in categories %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <a href="{% url 'category_books' category.id %}" class="category-card-link">
-                    <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas {{ category.icon }}"></i>
+            <div class="col-lg-2 col-md-4 col-4">
+                <a href="{% url 'category_books' category.id %}" class="cat-card-link">
+                    <div class="cat-card">
+                        <div class="cat-card-bg">
+                            {% if category.image %}
+                            <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                            {% endif %}
                         </div>
-                        <h4>{{ category.name }}</h4>
-                        <p>{{ category.book_count }} book{{ category.book_count|pluralize }}</p>
+                        <div class="cat-card-overlay"></div>
+                        <div class="cat-card-info">
+                            <i class="fas {{ category.icon }} cat-icon"></i>
+                            <h6 class="cat-name">{{ category.name }}</h6>
+                            <span class="cat-count">{{ category.books.count }} books</span>
+                        </div>
                     </div>
                 </a>
             </div>
             {% empty %}
-            <p class="text-center text-muted">No categories have been added yet.</p>
+            <p class="text-center text-muted">No categories yet.</p>
             {% endfor %}
         </div>
     </div>

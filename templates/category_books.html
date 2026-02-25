@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load library_filters %}
 
-{% block title %}{{ category.name }} - Electronic Library{% endblock %}
+{% block title %}{{ category.name }} - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-categories">
     <div class="container">
         <h1>{{ category.name }}</h1>
         <p>{{ books|length }} book{{ books|length|pluralize }} in this category</p>
@@ -13,36 +13,31 @@
 
 <section class="section-padding">
     <div class="container">
-        <div class="row">
+        <div class="row g-3">
             {% for book in books %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="book-card">
-                    <div class="book-cover">
-                        {% if book.cover %}
-                        <img src="{{ book.cover.url }}" alt="{{ book.title }}">
-                        {% else %}
-                        <div class="book-cover-placeholder">
-                            <i class="fas fa-book"></i>
+            <div class="col-lg-2 col-md-4 col-4">
+                <a href="{% url 'book_detail' book.id %}" class="recent-card-link">
+                    <div class="recent-card">
+                        <div class="recent-card-cover">
+                            {% if book.cover %}
+                            <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                            {% else %}
+                            <div class="book-cover-placeholder"><i class="fas fa-book"></i></div>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                    </div>
-                    <div class="book-info">
-                        <h5 class="book-title">{{ book.title|truncatewords:6 }}</h5>
-                        <p class="book-author">{{ book.author.name }}</p>
-                        <div class="book-meta">
-                            <span class="book-rating">{{ book.average_rating|star_rating }}</span>
-                            {{ book|book_status }}
+                        <div class="recent-card-info">
+                            <h6 class="recent-card-title">{{ book.title|truncatewords:4 }}</h6>
+                            <div class="recent-card-rating">{{ book.average_rating|star_rating }}</div>
                         </div>
-                        <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-detail">View Details</a>
                     </div>
-                </div>
+                </a>
             </div>
             {% empty %}
             <p class="text-center text-muted">No books in this category yet.</p>
             {% endfor %}
         </div>
 
-        <div class="text-center mt-3">
+        <div class="text-center mt-4">
             <a href="{% url 'category_list' %}" class="btn btn-outline-custom">Back to Categories</a>
         </div>
     </div>

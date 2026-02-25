@@ -28,25 +28,26 @@ class VisitLoggingMiddleware:
         return response
 
 
-# shows a maintenance page to regular users when the admin toggles it on
+# maintenance mode — toggled from the admin dashboard (SiteSettings model)
+# /admin/ and /login/ are always accessible so staff never gets locked out
 class MaintenanceModeMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        # always let admin and static files through
         path = request.path
-        if path.startswith('/admin/') or path.startswith('/static/') or path.startswith('/media/'):
+
+        # always let admin and login through
+        if path.startswith('/admin/') or path.startswith('/login/') or path.startswith('/static/') or path.startswith('/media/'):
             return self.get_response(request)
 
-        # staff can still access the site so they can turn maintenance off
+        # staff bypass maintenance entirely
         if hasattr(request, 'user') and request.user.is_authenticated and request.user.is_staff:
             return self.get_response(request)
 
         try:
             from .models import SiteSettings
-            settings = SiteSettings.load()
-            if settings.maintenance_mode:
+            if SiteSettings.load().maintenance_mode:
                 return render(request, 'maintenance.html', status=503)
         except Exception:
             pass

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Review - Electronic Library{% endblock %}
+{% block title %}Add Review - Maktaba{% endblock %}
 
 {% block content %}
-<section class="page-header">
+<section class="page-header header-bg-books">
     <div class="container">
         <h1>Add Review</h1>
     </div>
@@ -47,7 +47,11 @@
                         </div>
 
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary-custom">Submit Review</button>
+                            <button type="submit" class="btn-3d">
+                                <span class="btn-3d-shadow"></span>
+                                <span class="btn-3d-edge"></span>
+                                <span class="btn-3d-front">Submit Review</span>
+                            </button>
                             <a href="{% url 'book_detail' book.id %}" class="btn btn-outline-custom">Cancel</a>
                         </div>
                     </form>

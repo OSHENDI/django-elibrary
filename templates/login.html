@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Login - Electronic Library{% endblock %}
+{% block title %}Login - Maktaba{% endblock %}
 
 {% block content %}
 <section class="auth-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-lg-5 col-md-8">
                 <div class="auth-card">
                     <h2 class="text-center mb-4">Login</h2>
                     <form method="post" action="{% url 'login' %}">
@@ -27,7 +27,11 @@
                         </div>
                         {% endif %}
                         {% endfor %}
-                        <button type="submit" class="btn btn-primary-custom w-100">Login</button>
+                        <button type="submit" class="btn-3d btn-3d-block">
+                            <span class="btn-3d-shadow"></span>
+                            <span class="btn-3d-edge"></span>
+                            <span class="btn-3d-front">Login</span>
+                        </button>
                     </form>
                     <p class="text-center mt-3">
                         Don't have an account? <a href="{% url 'register' %}">Register now</a>

@@ -13,7 +13,7 @@ from .forms import RegistrationForm, LoginForm, ContactForm, ReviewForm, Profile
 
 
 def home(request):
-    recent_books = Book.objects.all()[:6]
+    recent_books = Book.objects.order_by('-created_at')[:6]
 
     # grab the top 3 books that actually have reviews
     top_books = Book.objects.annotate(
@@ -43,13 +43,13 @@ def book_list(request):
             Q(title__icontains=query) | Q(author__name__icontains=query)
         )
 
-    # filter by category from dropdown
+    # filter by category from dropdown — guard against non-numeric values like 'None'
     category_id = request.GET.get('category', '')
     selected_category = None
     if category_id:
-        books = books.filter(category_id=category_id)
         try:
             selected_category = int(category_id)
+            books = books.filter(category_id=selected_category)
         except (ValueError, TypeError):
             selected_category = None
 
@@ -196,7 +196,7 @@ def login_view(request):
             if user is None:
                 # maybe they typed their email instead of username
                 try:
-                    user_obj = User.objects.get(email=username)
+                    user_obj = User.objects.get(email__iexact=username)
                     user = authenticate(request, username=user_obj.username, password=password)
                 except User.DoesNotExist:
                     user = None

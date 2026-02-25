@@ -1,4 +1,3 @@
-// stagger entrance for cards using IntersectionObserver
 document.addEventListener('DOMContentLoaded', function () {
     var cards = document.querySelectorAll(
         '.book-card, .category-card, .author-card, .review-card, .borrow-card, .stat-card'
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cards.forEach(function (card) { observer.observe(card); });
 });
 
-// star rating picker for review form
+
 document.addEventListener('DOMContentLoaded', function () {
     var picker = document.getElementById('starPicker');
     if (!picker) return;
@@ -70,14 +69,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// auto-dismiss alerts after 4 seconds
+// auto remove toast alerts after animation ends (4s delay + 0.35s fade)
 document.addEventListener('DOMContentLoaded', function () {
-    var alerts = document.querySelectorAll('.alert');
-    alerts.forEach(function (alert) {
+    var toasts = document.querySelectorAll('.toast-alert');
+    toasts.forEach(function (toast) {
         setTimeout(function () {
-            var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-            if (bsAlert) bsAlert.close();
-        }, 4000);
+            toast.remove();
+        }, 4400);
     });
 });
 

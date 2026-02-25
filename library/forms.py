@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import Review, ContactMessage, UserProfile
 
 
+
 class RegistrationForm(forms.Form):
     full_name = forms.CharField(max_length=100, widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Full Name'}
@@ -23,30 +24,36 @@ class RegistrationForm(forms.Form):
         attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}
     ))
 
+    # check username isnt taken
     def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if User.objects.filter(username=username).exists():
+        username = self.cleaned_data.get('username').lower()
+        if User.objects.filter(username__iexact=username).exists():
             raise forms.ValidationError('This username is already taken.')
         return username
 
+    # check email isnt taken
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
+        email = self.cleaned_data.get('email').lower()
+        if User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError('An account with this email already exists.')
         return email
 
+    # password strength and matching
     def clean(self):
         cleaned = super().clean()
         password = cleaned.get('password')
         confirm = cleaned.get('confirm_password')
 
+        # min 8 characters
         if password and len(password) < 8:
             self.add_error('password', 'Password must be at least 8 characters.')
 
+        # passwords must match
         if password and confirm and password != confirm:
             self.add_error('confirm_password', 'Passwords do not match.')
 
         return cleaned
+
 
 
 class LoginForm(forms.Form):
@@ -61,6 +68,7 @@ class LoginForm(forms.Form):
     ))
 
 
+
 class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactMessage
@@ -73,7 +81,7 @@ class ContactForm(forms.ModelForm):
         }
 
 
-# the rating field is hidden because the star picker in the template sets it via js
+# rating is hidden because we use a custom star picker in the template
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
@@ -86,6 +94,7 @@ class ReviewForm(forms.ModelForm):
                 'rows': 4,
             }),
         }
+
 
 
 class ProfileEditForm(forms.Form):
@@ -108,12 +117,14 @@ class ProfileEditForm(forms.Form):
         attrs={'class': 'form-control', 'placeholder': 'Confirm new password'}
     ))
 
+    # validate new password if theyre changing it
     def clean(self):
         cleaned = super().clean()
         new_pw = cleaned.get('new_password')
         confirm_pw = cleaned.get('confirm_new_password')
 
         if new_pw:
+            # min 8 characters
             if len(new_pw) < 8:
                 self.add_error('new_password', 'Password must be at least 8 characters.')
             if new_pw != confirm_pw:

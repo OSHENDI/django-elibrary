@@ -3,13 +3,13 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# in production set this via environment variable
+
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
     'django-insecure-*dnmwp)#2w94oce*kf!i%t3yqyi2b1&@wriv-_ok3*#owaw4$z'
 )
 
-# set to False on pythonanywhere
+
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']
