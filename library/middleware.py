@@ -28,8 +28,8 @@ class VisitLoggingMiddleware:
         return response
 
 
-# maintenance mode — toggled from the admin dashboard (SiteSettings model)
-# /admin/ and /login/ are always accessible so staff never gets locked out
+# maintenance mode toggle from the admin dashboard
+# /admin/ and /login/ are accessible
 class MaintenanceModeMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
